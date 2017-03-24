@@ -45,20 +45,53 @@ function discoverMovies(callback) {
 function render() {
   // TODO 7
   // clear everything from both lists
+	$("ul").empty();
   
   // TODO 6
   // for each movie on the user's watchlist, insert a list item into the <ul> in the watchlist section
+	model.watchlistItems.forEach(function (movie) {
+        var movieTitle = $("<li></li>").text(movie.original_title);
+        $("#section-watchlist ul").append(movieTitle);
+    })
   
   // for each movie on the current browse list, 
   model.browseItems.forEach(function(movie) {
 		// TODO 3
 		// insert a list item into the <ul> in the browse section
-		
-		// TODO 4
-		// the list item should include a button that says "Add to Watchlist"
-		
-		// TODO 5
-		// when the button is clicked, this movie should be added to the model's watchlist and render() should be called again
+	  	if (model.watchlistItems.indexOf(movie) == -1){
+
+            var movieTitle = $("<li></li>").html(movie.original_title).append("</br>");
+            var addButton = $("<button></button>").text("Add to Watchlist");
+
+            //TODO BONUS
+            //figure out how to make the movieTitle and addButton elements one element so you can
+            //easily remove them once the button is clicked
+            //also make it so a button can only be clicked once
+
+			var titleAndButton = movieTitle.append(addButton);
+
+            $("#section-browse ul").append(titleAndButton);
+
+
+            // TODO 4
+            // the list item should include a button that says "Add to Watchlist"
+
+            //Answer: solved above in TODO3
+
+
+            // TODO 5
+            // when the button is clicked, this movie should be added to the model's watchlist and render() should be called again
+
+
+
+            addButton.on("click",(function(){
+                var watchlistItems = model.watchlistItems;
+                watchlistItems.push(movie);
+                render();
+            }));
+
+		}
+
   });
   
 }
